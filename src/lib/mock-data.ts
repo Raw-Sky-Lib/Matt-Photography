@@ -69,6 +69,16 @@ export const mockHomePageSections: HomePageSections = {
       { quote: 'Exacting on set, generous in edit. Rare combination.',        author: 'Art Director',       role: 'The Guardian',              avatar_url: null },
     ],
   },
+  faq: {
+    headline: 'Common questions.',
+    items: [
+      { question: 'How far in advance should I book?', answer: 'Most shoots are booked 4–6 weeks ahead, though I keep limited availability for shorter-notice work. For commercial or editorial projects with specific dates, earlier is always better.' },
+      { question: 'Do you travel for shoots?', answer: "Yes — I'm based in Vienna but work internationally. Travel costs are discussed and agreed in advance, and I'm comfortable working across most of Europe at short notice." },
+      { question: "What's included in a portrait session?", answer: 'A pre-shoot call, the session itself (typically 2–3 hours), and a curated selection of edited images delivered via private gallery within 10 working days.' },
+      { question: 'Can I request a specific look or mood?', answer: 'Always. Every shoot starts with a brief — your references, your ideas, what you want to feel when you look at the images. The more specific you are, the better the result.' },
+      { question: 'Do you license images for commercial use?', answer: "Yes. Licensing terms depend on usage — print, digital, duration, exclusivity. We'll agree everything in writing before any shoot begins." },
+    ],
+  },
   cta: {
     headline: "Let's make something\nworth remembering.",
     subheadline: 'Portrait, editorial, or commercial — tell me about your project.',

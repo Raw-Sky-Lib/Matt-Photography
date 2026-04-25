@@ -16,11 +16,8 @@ export default function TestimonialsSectionClient({ data }: { data: Testimonials
   if (!data.items.length) return null
 
   return (
-    <section style={{ padding: '160px 48px', background: '#fff' }}>
-      <div style={{
-        display: 'grid', gridTemplateColumns: '1fr 3fr',
-        gap: 48, alignItems: 'start',
-      }}>
+    <section className="px-6 md:px-12 py-24 lg:py-40" style={{ background: '#fff' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-12">
 
         {/* Section label */}
         <div>
@@ -50,7 +47,7 @@ export default function TestimonialsSectionClient({ data }: { data: Testimonials
                   margin: 0,
                   fontFamily: 'var(--font-display)', fontWeight: 500,
                   textTransform: 'uppercase',
-                  fontSize: 'clamp(40px,5.2vw,80px)',
+                  fontSize: 'clamp(32px,5.2vw,80px)',
                   lineHeight: 1.048, letterSpacing: '-0.015em',
                   color: 'var(--fg-1)', textWrap: 'balance',
                 }}>

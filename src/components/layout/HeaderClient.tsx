@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -11,12 +11,13 @@ interface Props {
 }
 
 export default function HeaderClient({ settings, navItems }: Props) {
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled]     = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const pathname = usePathname()
+  const pathname  = usePathname()
+  const menuRef   = useRef<HTMLDivElement>(null)
 
   const isHome = pathname === '/'
-  const dark = isHome && !scrolled
+  const dark   = isHome && !scrolled
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 80)
@@ -26,19 +27,33 @@ export default function HeaderClient({ settings, navItems }: Props) {
 
   useEffect(() => { setMobileOpen(false) }, [pathname])
 
-  const fg   = dark ? '#fff'                   : 'var(--fg-1)'
-  const dim  = dark ? 'rgba(255,255,255,0.55)' : 'var(--fg-3)'
+  useEffect(() => {
+    if (!mobileOpen) return
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMobileOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [mobileOpen])
+
+  const fg  = dark ? '#fff'                   : 'var(--fg-1)'
+  const dim = dark ? 'rgba(255,255,255,0.55)' : 'var(--fg-3)'
 
   return (
-    <header style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '22px 48px',
-      background: dark ? 'transparent' : '#fff',
-      borderBottom: dark ? '1px solid transparent' : '1px solid var(--fg-1)',
-      transition: 'background 300ms, border-color 300ms',
-    }}>
-
+    <header
+      ref={menuRef}
+      className="px-6 md:px-12"
+      style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        paddingTop: 22, paddingBottom: 22,
+        background: dark ? 'transparent' : '#fff',
+        borderBottom: dark ? '1px solid transparent' : '1px solid var(--fg-1)',
+        transition: 'background 300ms, border-color 300ms',
+      }}
+    >
       {/* Logo */}
       <Link href="/" style={{
         display: 'flex', alignItems: 'center', gap: 12,
@@ -89,19 +104,21 @@ export default function HeaderClient({ settings, navItems }: Props) {
         })}
       </nav>
 
-      {/* Availability */}
-      <div style={{
-        alignItems: 'center', gap: 14,
-        color: fg, fontFamily: 'var(--font-mono)', fontSize: 11,
-        letterSpacing: '0.1em', textTransform: 'uppercase',
-        transition: 'color 300ms',
-      }} className="hidden md:flex">
-        <span style={{
-          width: 6, height: 6, borderRadius: 0,
-          background: '#34c759', display: 'inline-block', flexShrink: 0,
-        }}/>
-        Available — 2026
-      </div>
+      {/* Availability — from settings.booking_status */}
+      {settings.booking_status && (
+        <div style={{
+          alignItems: 'center', gap: 14,
+          color: fg, fontFamily: 'var(--font-mono)', fontSize: 11,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+          transition: 'color 300ms',
+        }} className="hidden md:flex">
+          <span style={{
+            width: 6, height: 6, borderRadius: 0,
+            background: '#34c759', display: 'inline-block', flexShrink: 0,
+          }}/>
+          Available — {settings.booking_status}
+        </div>
+      )}
 
       {/* Mobile hamburger */}
       <button
@@ -125,7 +142,7 @@ export default function HeaderClient({ settings, navItems }: Props) {
         <div style={{
           position: 'absolute', top: '100%', left: 0, right: 0,
           background: '#fff', borderBottom: '1px solid var(--fg-1)',
-          padding: '24px 32px 32px',
+          padding: '24px 24px 32px',
           display: 'flex', flexDirection: 'column', gap: 20,
         }} className="md:hidden">
           {navItems.map((item) => (
