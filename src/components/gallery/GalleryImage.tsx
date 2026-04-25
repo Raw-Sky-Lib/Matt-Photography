@@ -3,24 +3,22 @@ import type { GalleryImage as GalleryImageType } from '@/types/content'
 
 interface Props {
   image: GalleryImageType
-  onClick?: (image: GalleryImageType) => void
+  onClick?: () => void
 }
 
 export default function GalleryImage({ image, onClick }: Props) {
   return (
     <div
-      onClick={() => onClick?.(image)}
-      className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[var(--color-surface)] cursor-pointer group"
+      onClick={onClick}
+      style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden', cursor: 'pointer' }}
     >
       <Image
         src={image.image_url}
         alt={image.alt_text}
         fill
-        className="object-cover transition-all duration-300 group-hover:brightness-90"
-        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        {...(image.width && image.height
-          ? {}
-          : {})}
+        style={{ objectFit: 'cover', transition: 'transform 500ms var(--ease-std)' }}
+        sizes="(max-width: 768px) 50vw, 33vw"
+        className="gallery-img"
       />
     </div>
   )
