@@ -1,21 +1,18 @@
 'use client'
+import Image from 'next/image'
 import WipeButton from '@/components/ui/WipeButton'
 import type { AboutPreviewSection } from '@/types/content'
 
 export default function AboutPreviewSectionClient({ data }: { data: AboutPreviewSection }) {
   return (
     <section style={{ background: '#fff', borderTop: '1px solid var(--fg-1)' }}>
-      <div style={{
-        padding: '120px 48px 140px',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
-        gap: 80, alignItems: 'flex-start',
-      }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 px-6 md:px-12 py-20 md:py-28 lg:py-36">
 
         {/* Left — text */}
         <div>
           <h2 style={{
             fontFamily: 'var(--font-display)', fontWeight: 500,
-            fontSize: 'clamp(56px,7.4vw,120px)', lineHeight: 1.04,
+            fontSize: 'clamp(48px,7.4vw,120px)', lineHeight: 1.04,
             letterSpacing: '-0.02em', textTransform: 'uppercase',
             color: 'var(--fg-1)', margin: '0 0 36px',
           }}>
@@ -33,14 +30,15 @@ export default function AboutPreviewSectionClient({ data }: { data: AboutPreview
           </WipeButton>
         </div>
 
-        {/* Right — photo placeholder */}
+        {/* Right — photo */}
         <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden' }}>
           {data.image_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={data.image_url}
               alt={data.headline}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           ) : (
             <>
@@ -61,14 +59,6 @@ export default function AboutPreviewSectionClient({ data }: { data: AboutPreview
                 position: 'absolute', inset: 0,
                 background: 'radial-gradient(ellipse at 50% 50%, transparent 48%, rgba(0,0,0,0.45) 100%)',
               }}/>
-              <div style={{
-                position: 'absolute', bottom: 24, left: 24,
-                fontFamily: 'var(--font-mono)', fontSize: 10,
-                letterSpacing: '0.12em', color: 'rgba(255,255,255,0.55)',
-                textTransform: 'uppercase', lineHeight: 1.6,
-              }}>
-                Portrait · London<br/>Natural light
-              </div>
             </>
           )}
         </div>

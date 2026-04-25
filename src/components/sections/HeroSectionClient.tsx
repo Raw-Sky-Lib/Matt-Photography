@@ -39,6 +39,8 @@ export default function HeroSectionClient({ data, settings }: Props) {
     return () => clearInterval(id)
   }, [])
 
+  const gutter = 'clamp(24px, 5vw, 48px)'
+
   return (
     <section style={{
       position: 'relative', height: '100vh', minHeight: 780,
@@ -80,7 +82,7 @@ export default function HeroSectionClient({ data, settings }: Props) {
 
       {/* ── Top bar ─────────────────────────────────────────── */}
       <div style={{
-        position: 'absolute', top: 104, left: 48, right: 48, zIndex: 4,
+        position: 'absolute', top: 104, left: gutter, right: gutter, zIndex: 4,
         display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start',
       }}>
         <div style={{
@@ -95,12 +97,12 @@ export default function HeroSectionClient({ data, settings }: Props) {
 
       {/* ── Centre headline ──────────────────────────────────── */}
       <div style={{
-        position: 'absolute', top: '50%', left: 48, right: 48,
+        position: 'absolute', top: '50%', left: gutter, right: gutter,
         transform: 'translateY(-50%)', zIndex: 3,
       }}>
         <h1 style={{
           fontFamily: 'var(--font-display)', fontWeight: 500,
-          fontSize: 'clamp(64px, 10vw, 168px)', lineHeight: 1.0,
+          fontSize: 'clamp(40px, 10vw, 168px)', lineHeight: 1.0,
           letterSpacing: '-0.03em', textTransform: 'uppercase',
           color: '#fff', margin: 0,
           whiteSpace: 'pre-line',
@@ -108,9 +110,10 @@ export default function HeroSectionClient({ data, settings }: Props) {
           {data.headline}
         </h1>
         <p style={{
-          marginTop: 32, maxWidth: 480,
+          marginTop: 32,
           fontFamily: 'var(--font-sans)', fontSize: 17, lineHeight: 1.5,
           color: 'rgba(255,255,255,0.82)',
+          maxWidth: 'min(480px, 100%)',
         }}>
           {data.subheadline}
         </p>
@@ -118,10 +121,10 @@ export default function HeroSectionClient({ data, settings }: Props) {
 
       {/* ── Bottom bar ───────────────────────────────────────── */}
       <div style={{
-        position: 'absolute', bottom: 48, left: 48, right: 48, zIndex: 4,
+        position: 'absolute', bottom: 48, left: gutter, right: gutter, zIndex: 4,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
       }}>
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
           <HeroButton href={data.cta_url} number={1}>{data.cta_label}</HeroButton>
           {data.secondary_cta_label && data.secondary_cta_url && (
             <HeroButton href={data.secondary_cta_url} number={2}>
@@ -130,19 +133,19 @@ export default function HeroSectionClient({ data, settings }: Props) {
           )}
         </div>
 
-        <div style={{
-          display: 'flex', gap: 48,
-          fontFamily: 'var(--font-mono)', fontSize: 11,
-          letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)',
-          textTransform: 'uppercase',
-        }}>
-          {settings.location && (
+        {settings.location && (
+          <div className="hidden sm:flex" style={{
+            gap: 48,
+            fontFamily: 'var(--font-mono)', fontSize: 11,
+            letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)',
+            textTransform: 'uppercase',
+          }}>
             <div>
               <div style={{ color: 'rgba(255,255,255,0.45)', marginBottom: 4 }}>Based</div>
               <div>{settings.location}</div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
     </section>

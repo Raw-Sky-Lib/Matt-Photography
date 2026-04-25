@@ -148,12 +148,23 @@ export interface CTASection {
   phone?: string | null
 }
 
+export interface FAQItem {
+  question: string
+  answer: string
+}
+
+export interface FAQSection {
+  headline: string
+  items: FAQItem[]
+}
+
 export interface HomePageSections {
   hero: HeroSection
   client_marquee: ClientMarqueeSection
   featured_work: FeaturedWorkSection
   about_preview: AboutPreviewSection
   testimonials: TestimonialsSection
+  faq?: FAQSection
   cta: CTASection
 }
 

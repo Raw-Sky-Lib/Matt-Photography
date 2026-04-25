@@ -317,3 +317,14 @@ a:hover {
 .prose a      { color: var(--fg-1); text-decoration: underline; }
 .prose a:hover { text-decoration: none; }
 .prose img    { border-radius: 0; margin: 1.5rem 0; max-width: 100%; }
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
+.footer-nav-link {
+  transition: color 220ms var(--ease-std);
+}
+.footer-nav-link:hover {
+  color: #fff !important;
+}

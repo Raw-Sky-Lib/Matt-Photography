@@ -140,6 +140,17 @@ export async function getGalleryImages(categorySlug?: string): Promise<GalleryIm
   return (data ?? []) as GalleryImage[]
 }
 
+export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
+  const supabase = createServerClient()
+  const { data } = await supabase
+    .from('projects')
+    .select('*, categories(id, name, slug)')
+    .eq('is_featured', true)
+    .eq('is_published', true)
+    .order('display_order', { ascending: true })
+  return (data ?? []) as ProjectSummary[]
+}
+
 export async function getPublishedProjects(): Promise<ProjectSummary[]> {
   const supabase = createServerClient()
   const { data } = await supabase
