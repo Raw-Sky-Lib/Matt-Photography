@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+/* =========================================================
+   Matt Banton — Design tokens
+   A quiet, editorial system. Monochromatic. Photography-led.
+   =========================================================
+   Fonts are loaded via next/font in layout.tsx (correct way
+   for Next.js — avoids the @import-after-CSS browser bug).
+   The --loaded-font-* variables are injected by next/font
+   as CSS variables on <html>. We alias them here.
+   ========================================================= */
+
+@font-face {
+  font-family: "BioRhyme";
+  src: url("/fonts/BioRhyme-VariableFont.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/BricolageGrotesque-VariableFont.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Colors (monochromatic shell) ---------- */
+  --fg-1: #0a0a0a;
+  --fg-2: #2b2b2b;
+  --fg-3: #6b6b6b;
+  --fg-4: #a5a5a5;
+  --fg-5: #d4d4d4;
+
+  --bg-1: #ffffff;
+  --bg-2: #fafaf8;
+  --bg-3: #f2f1ee;
+  --bg-4: #e8e6e1;
+
+  --ink:         #0a0a0a;
+  --ink-inverse: #ffffff;
+
+  --accent:      #0a0a0a;
+  --muted:       var(--fg-3);
+  --rule:        var(--fg-5);
+  --rule-strong: var(--fg-4);
+
+  /* ── CLAUDE.md semantic aliases ───────────────── */
+  --color-brand:      var(--fg-1);
+  --color-brand-dark: #000000;
+  --color-accent:     var(--fg-1);
+  --color-bg:         var(--bg-1);
+  --color-surface:    var(--bg-2);
+  --color-text:       var(--fg-1);
+  --color-text-muted: var(--fg-3);
+
+  /* ---------- Type families ----------
+     --loaded-font-* are injected by next/font (layout.tsx).
+     Fallbacks kick in during initial load or if next/font fails. */
+  --font-display:   var(--loaded-font-display, "Anton"), "Oswald", "Helvetica Neue", Arial, sans-serif;
+  --font-condensed: var(--loaded-font-condensed, "Oswald"), "Anton", "Helvetica Neue", Arial, sans-serif;
+  --font-sans:      var(--loaded-font-sans, "Archivo"), "Inter", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:      var(--loaded-font-mono, "JetBrains Mono"), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---------- Type scale ---------- */
+  --fs-hairline: 11px;
+  --fs-caption:  13px;
+  --fs-small:    14px;
+  --fs-body:     16px;
+  --fs-lead:     19px;
+  --fs-h4:       22px;
+  --fs-h3:       32px;
+  --fs-h2:       52px;
+  --fs-h1:       88px;
+  --fs-display:  128px;
+
+  /* Line heights */
+  --lh-tight: 1.05;
+  --lh-snug:  1.2;
+  --lh-body:  1.55;
+  --lh-loose: 1.75;
+
+  /* Letter spacing */
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.08em;
+  --tracking-widest:  0.16em;
+
+  /* Weights */
+  --w-light:    300;
+  --w-regular:  400;
+  --w-medium:   500;
+  --w-semibold: 600;
+  --w-bold:     700;
+
+  /* ---------- Spacing (8pt grid) ---------- */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+  --space-11: 192px;
+
+  /* ---------- Radius (almost none — photo book) ---------- */
+  --radius-0: 0;
+  --radius-1: 2px;
+  --radius-2: 4px;
+
+  /* ---------- Borders ---------- */
+  --border-hairline: 1px solid var(--rule);
+  --border-strong:   1px solid var(--fg-2);
+
+  /* ---------- Shadows ---------- */
+  --shadow-none: none;
+  --shadow-soft: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lift: 0 8px 24px rgba(0,0,0,0.06);
+
+  /* ---------- Motion ---------- */
+  --ease-std:   cubic-bezier(0.2, 0.0, 0.2, 1);
+  --ease-standard: cubic-bezier(0.2, 0.0, 0.2, 1);
+  --dur-quick:  120ms;
+  --dur-base:   220ms;
+  --dur-calm:   400ms;
+
+  /* ---------- Layout ---------- */
+  --content-max: 1440px;
+  --measure:     64ch;
+  --gutter:      32px;
+  --gutter-wide: 64px;
+}
+
+/* =========================================================
+   Base reset & defaults
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  color: var(--fg-1);
+  background: var(--bg-1);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+button { font: inherit; }
+
+::selection { background: var(--fg-1); color: var(--bg-1); }
+
+/* =========================================================
+   Typography defaults
+   ========================================================= */
+
+h1, .h1, .display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h1);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--fg-1);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0.06em;
+}
+
+.display {
+  font-size: var(--fs-display);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h2);
+  line-height: 1.08;
+  letter-spacing: -0.008em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0.06em;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+  line-height: 1.2;
+  margin: 0;
+}
+
+p, .p {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-2);
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+}
+
+/* =========================================================
+   Editorial utility classes
+   ========================================================= */
+
+/* Slash-numbered index labels: /01, (01/19) */
+.index, .slash {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--fg-1);
+}
+
+.eyebrow, .label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-hairline);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+.caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  color: var(--fg-3);
+  line-height: var(--lh-snug);
+}
+
+.meta {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  color: var(--fg-3);
+}
+
+hr, .rule {
+  border: 0;
+  border-top: var(--border-hairline);
+  margin: var(--space-7) 0;
+}
+
+/* =========================================================
+   Links
+   ========================================================= */
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--fg-4);
+  transition:
+    text-decoration-color var(--dur-base) var(--ease-std),
+    opacity var(--dur-base) var(--ease-std);
+}
+a:hover {
+  text-decoration-color: var(--fg-1);
+}
+
+/* =========================================================
+   Animations
+   ========================================================= */
+
+@keyframes mb-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+
+/* =========================================================
+   Prose (journal / bio HTML from Supabase)
+   ========================================================= */
+
+.prose h2     { font-size: 1.5rem;   font-weight: 700; color: var(--fg-1); margin-top: 2rem;   margin-bottom: 1rem; }
+.prose h3     { font-size: 1.25rem;  font-weight: 600; color: var(--fg-1); margin-top: 1.5rem; margin-bottom: 0.75rem; }
+.prose p      { color: var(--fg-2);  line-height: 1.75; margin-bottom: 1rem; max-width: 64ch; }
+.prose ul     { list-style: disc;    padding-left: 1.5rem; margin-bottom: 1rem; color: var(--fg-2); }
+.prose ol     { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; color: var(--fg-2); }
+.prose blockquote { border-left: 4px solid var(--fg-1); padding-left: 1rem; font-style: italic; color: var(--fg-3); margin: 1.5rem 0; }
+.prose code   { background: var(--bg-3); padding: 0.125rem 0.375rem; border-radius: 2px; font-size: 0.875rem; font-family: var(--font-mono); }
+.prose a      { color: var(--fg-1); text-decoration: underline; }
+.prose a:hover { text-decoration: none; }
+.prose img    { border-radius: 0; margin: 1.5rem 0; max-width: 100%; }
