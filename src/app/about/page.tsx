@@ -7,11 +7,9 @@ import CTASection from '@/components/sections/CTASection'
 
 export const revalidate = 3600
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'About',
-    description: 'Portrait and editorial photographer based in London.',
-  }
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Portrait and editorial photographer based in London.',
 }
 
 export default async function AboutPage() {

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getGalleryImages, getCategories, getCategoryBySlug, getSiteSettings } from '@/lib/queries'
+import { getGalleryImages, getCategories, getCategoryBySlug } from '@/lib/queries'
 import GalleryCategoryNav from '@/components/gallery/GalleryCategoryNav'
 import GalleryGridClient from '@/components/gallery/GalleryGridClient'
 
@@ -17,13 +17,10 @@ export async function generateMetadata({
   params: Promise<{ category: string }>
 }): Promise<Metadata> {
   const { category } = await params
-  const [cat, settings] = await Promise.all([
-    getCategoryBySlug(category),
-    getSiteSettings(),
-  ])
+  const cat = await getCategoryBySlug(category)
   return {
-    title: cat ? `${cat.name} — ${settings.site_name}` : 'Gallery',
-    description: `${cat?.name ?? 'Photography'} by Matt Banton.`,
+    title: cat?.name ?? 'Gallery',
+    description: `${cat?.name ?? 'Photography'} — portrait and editorial photography.`,
   }
 }
 

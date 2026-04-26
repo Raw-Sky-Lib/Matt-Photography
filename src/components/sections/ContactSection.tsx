@@ -13,26 +13,36 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>
 
-interface Props {
-  projectTypes: string[]
+const fieldStyle: React.CSSProperties = {
+  width: '100%', background: 'none', border: 'none',
+  borderBottom: '1px solid var(--fg-4)', outline: 'none',
+  padding: '0 0 14px',
+  fontFamily: 'var(--font-sans)', fontSize: 'clamp(15px, 1.4vw, 17px)',
+  color: 'var(--fg-1)', borderRadius: 0,
 }
 
-export default function ContactSection({ projectTypes }: Props) {
+const labelStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 600,
+  letterSpacing: '0.18em', textTransform: 'uppercase',
+  color: 'var(--fg-4)', display: 'block', marginBottom: 10,
+}
+
+const errorStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)', fontSize: 10,
+  letterSpacing: '0.08em', color: '#e05252', marginTop: 8,
+}
+
+export default function ContactSection({ projectTypes }: { projectTypes: string[] }) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [serverError, setServerError] = useState<string | null>(null)
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ContactFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   })
 
   async function onSubmit(data: ContactFormData) {
     setStatus('submitting')
     setServerError(null)
-
     try {
       const res = await fetch('/api/submit-form', {
         method: 'POST',
@@ -40,13 +50,11 @@ export default function ContactSection({ projectTypes }: Props) {
         body: JSON.stringify(data),
       })
       const json = await res.json()
-
       if (!res.ok) {
         setServerError(json.error ?? 'Something went wrong. Please try again.')
         setStatus('error')
         return
       }
-
       setStatus('success')
     } catch {
       setServerError('Something went wrong. Please try again.')
@@ -56,104 +64,91 @@ export default function ContactSection({ projectTypes }: Props) {
 
   if (status === 'success') {
     return (
-      <section className="py-16 px-4 max-w-xl mx-auto">
-        <div className="p-8 bg-[var(--color-surface)] rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-[var(--color-text)] mb-3">Thank you.</h2>
-          <p className="text-[var(--color-text-muted)]">
-            {"I'll be in touch within 48 hours."}
-          </p>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{
+          fontFamily: 'var(--font-display)', fontWeight: 500,
+          fontSize: 'clamp(48px, 7vw, 96px)', lineHeight: 0.96,
+          letterSpacing: '-0.03em', textTransform: 'uppercase',
+          color: 'var(--fg-1)', marginBottom: 20,
+        }}>
+          Sent.
         </div>
-      </section>
+        <p style={{
+          fontFamily: 'var(--font-mono)', fontSize: 10,
+          letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--fg-4)',
+        }}>
+          {"I'll be in touch within 48 hours."}
+        </p>
+      </div>
     )
   }
 
   return (
-    <section className="py-16 px-4 max-w-xl mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-6">
-        {serverError && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {serverError}
-          </div>
-        )}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      style={{ display: 'flex', flexDirection: 'column', gap: 36 }}
+    >
+      {serverError && (
+        <p style={{ ...errorStyle, fontSize: 11 }}>{serverError}</p>
+      )}
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="name" className="text-sm font-medium text-[var(--color-text)]">
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            {...register('name')}
-            className="px-4 py-3 border border-[var(--color-surface)] rounded-lg bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-brand)]"
-            disabled={status === 'submitting'}
-          />
-          {errors.name && (
-            <p className="text-red-600 text-xs">{errors.name.message}</p>
-          )}
-        </div>
+      <div>
+        <label htmlFor="name" style={labelStyle}>Name</label>
+        <input id="name" type="text" {...register('name')} style={fieldStyle} disabled={status === 'submitting'} />
+        {errors.name && <p style={errorStyle}>{errors.name.message}</p>}
+      </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm font-medium text-[var(--color-text)]">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            {...register('email')}
-            className="px-4 py-3 border border-[var(--color-surface)] rounded-lg bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-brand)]"
-            disabled={status === 'submitting'}
-          />
-          {errors.email && (
-            <p className="text-red-600 text-xs">{errors.email.message}</p>
-          )}
-        </div>
+      <div>
+        <label htmlFor="email" style={labelStyle}>Email</label>
+        <input id="email" type="email" {...register('email')} style={fieldStyle} disabled={status === 'submitting'} />
+        {errors.email && <p style={errorStyle}>{errors.email.message}</p>}
+      </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="project_type" className="text-sm font-medium text-[var(--color-text)]">
-            Project type
-          </label>
-          <select
-            id="project_type"
-            {...register('project_type')}
-            className="px-4 py-3 border border-[var(--color-surface)] rounded-lg bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-brand)]"
-            disabled={status === 'submitting'}
-          >
-            <option value="">Select a project type</option>
-            {projectTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-          {errors.project_type && (
-            <p className="text-red-600 text-xs">{errors.project_type.message}</p>
-          )}
-        </div>
+      <div>
+        <label htmlFor="project_type" style={labelStyle}>Project type</label>
+        <select id="project_type" {...register('project_type')} style={fieldStyle} disabled={status === 'submitting'}>
+          <option value="">Select</option>
+          {projectTypes.map((type) => (
+            <option key={type} value={type}>{type}</option>
+          ))}
+        </select>
+        {errors.project_type && <p style={errorStyle}>{errors.project_type.message}</p>}
+      </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="message" className="text-sm font-medium text-[var(--color-text)]">
-            Message
-          </label>
-          <textarea
-            id="message"
-            rows={6}
-            {...register('message')}
-            className="px-4 py-3 border border-[var(--color-surface)] rounded-lg bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-brand)] resize-none"
-            disabled={status === 'submitting'}
-          />
-          {errors.message && (
-            <p className="text-red-600 text-xs">{errors.message.message}</p>
-          )}
-        </div>
+      <div>
+        <label htmlFor="message" style={labelStyle}>Message</label>
+        <textarea
+          id="message" rows={5}
+          {...register('message')}
+          style={{ ...fieldStyle, resize: 'none' }}
+          disabled={status === 'submitting'}
+        />
+        {errors.message && <p style={errorStyle}>{errors.message.message}</p>}
+      </div>
 
+      <div style={{ paddingTop: 8 }}>
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-8 py-3 bg-[var(--color-brand)] text-white rounded-lg font-semibold hover:bg-[var(--color-brand-dark)] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          style={{
+            background: 'var(--fg-1)', color: 'var(--bg-1)',
+            fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 700,
+            letterSpacing: '0.18em', textTransform: 'uppercase',
+            padding: '16px 32px', border: 'none', cursor: 'pointer',
+            display: 'inline-flex', alignItems: 'center', gap: 12,
+            opacity: status === 'submitting' ? 0.5 : 1,
+            transition: 'opacity 200ms',
+          }}
         >
           {status === 'submitting' ? 'Sending…' : 'Send message'}
+          {status !== 'submitting' && (
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          )}
         </button>
-      </form>
-    </section>
+      </div>
+    </form>
   )
 }

@@ -1,16 +1,13 @@
 import type { Metadata } from 'next'
-import { getGalleryImages, getCategories, getSiteSettings } from '@/lib/queries'
+import { getGalleryImages, getCategories } from '@/lib/queries'
 import GalleryCategoryNav from '@/components/gallery/GalleryCategoryNav'
 import GalleryGridClient from '@/components/gallery/GalleryGridClient'
 
 export const revalidate = 3600
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
-  return {
-    title: `Gallery — ${settings.site_name}`,
-    description: 'Portrait and editorial photography by Matt Banton.',
-  }
+export const metadata: Metadata = {
+  title: 'Gallery',
+  description: 'Portrait and editorial photography.',
 }
 
 export default async function GalleryPage() {

@@ -1,44 +1,66 @@
+'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { formatDate } from '@/utils/date'
 import type { PostSummary } from '@/types/content'
 
 export default function JournalCard({ post }: { post: PostSummary }) {
+  const [hover, setHover] = useState(false)
+
   return (
-    <article>
-      {post.cover_image_url && (
-        <Link href={`/journal/${post.slug}`} className="block relative aspect-[16/9] rounded-lg overflow-hidden mb-4 group">
+    <Link
+      href={`/journal/${post.slug}`}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ textDecoration: 'none', display: 'block' }}
+    >
+      {/* Cover */}
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden', background: '#111' }}>
+        {post.cover_image_url && (
           <Image
             src={post.cover_image_url}
             alt={post.title}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-        </Link>
-      )}
-      <div>
-        <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)] mb-2">
-          <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
-          {post.author_name && <span>{post.author_name}</span>}
+        )}
+      </div>
+
+      {/* Caption */}
+      <div style={{ padding: '20px 0 24px' }}>
+        <div style={{
+          fontFamily: 'var(--font-mono)', fontSize: 10,
+          letterSpacing: '0.12em', textTransform: 'uppercase',
+          color: 'var(--fg-4)', marginBottom: 10,
+        }}>
+          {formatDate(post.published_at)}
         </div>
-        <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">
-          <Link href={`/journal/${post.slug}`} className="hover:text-[var(--color-brand)] transition-colors">
-            {post.title}
-          </Link>
+        <h2 style={{
+          fontFamily: 'var(--font-display)', fontWeight: 500,
+          fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.08,
+          letterSpacing: '-0.01em', textTransform: 'uppercase',
+          color: 'var(--fg-1)', margin: '0 0 10px',
+          transform: hover ? 'translateX(6px)' : 'none',
+          transition: 'transform 320ms var(--ease-std)',
+        }}>
+          {post.title}
         </h2>
         {post.excerpt && (
-          <p className="text-[var(--color-text-muted)] text-sm leading-relaxed line-clamp-3 mb-3">
+          <p style={{
+            fontFamily: 'var(--font-sans)', fontSize: 13,
+            lineHeight: 1.6, color: 'var(--fg-3)',
+            margin: 0,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}>
             {post.excerpt}
           </p>
         )}
-        <Link
-          href={`/journal/${post.slug}`}
-          className="text-sm text-[var(--color-brand)] hover:underline font-medium"
-        >
-          Read more →
-        </Link>
       </div>
-    </article>
+    </Link>
   )
 }

@@ -41,11 +41,11 @@ export default function CTASectionClient({ data }: { data: CTASection }) {
 
         {/* Right — button */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
-          <WipeButton href={data.button_url} variant="ghost-inverse" number={1}>
+          <WipeButton href={data.button_url} variant="ghost-inverse">
             {data.button_label}
           </WipeButton>
           {data.secondary_button_label && data.secondary_button_url && (
-            <WipeButton href={data.secondary_button_url} variant="ghost-inverse" number={2}>
+            <WipeButton href={data.secondary_button_url} variant="ghost-inverse">
               {data.secondary_button_label}
             </WipeButton>
           )}

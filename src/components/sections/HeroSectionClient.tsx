@@ -125,9 +125,9 @@ export default function HeroSectionClient({ data, settings }: Props) {
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
       }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-          <HeroButton href={data.cta_url} number={1}>{data.cta_label}</HeroButton>
+          <HeroButton href={data.cta_url}>{data.cta_label}</HeroButton>
           {data.secondary_cta_label && data.secondary_cta_url && (
-            <HeroButton href={data.secondary_cta_url} number={2}>
+            <HeroButton href={data.secondary_cta_url}>
               {data.secondary_cta_label}
             </HeroButton>
           )}
@@ -152,7 +152,7 @@ export default function HeroSectionClient({ data, settings }: Props) {
   )
 }
 
-function HeroButton({ href, number, children }: { href: string; number?: number; children: React.ReactNode }) {
+function HeroButton({ href, children }: { href: string; children: React.ReactNode }) {
   const [hover, setHover] = useState(false)
   return (
     <Link
@@ -179,11 +179,6 @@ function HeroButton({ href, number, children }: { href: string; number?: number;
         transition: 'transform 320ms cubic-bezier(0.2,0,0.2,1)',
         zIndex: 0,
       }}/>
-      {number != null && (
-        <span style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-mono)', fontSize: 10, opacity: 0.6, letterSpacing: '0.04em' }}>
-          /{String(number).padStart(2, '0')}
-        </span>
-      )}
       <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
       <svg
         style={{

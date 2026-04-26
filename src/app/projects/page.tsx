@@ -1,17 +1,14 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { getPublishedProjects, getCategories, getSiteSettings } from '@/lib/queries'
+import { getPublishedProjects, getCategories } from '@/lib/queries'
 import CategoryFilterBar from '@/components/projects/CategoryFilterBar'
 import ProjectsGrid from '@/components/projects/ProjectsGrid'
 
 export const revalidate = 3600
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
-  return {
-    title: `Projects — ${settings.site_name}`,
-    description: 'Portrait, editorial, and commercial photography projects.',
-  }
+export const metadata: Metadata = {
+  title: 'Projects',
+  description: 'Portrait, editorial, and commercial photography projects.',
 }
 
 export default async function ProjectsPage({
