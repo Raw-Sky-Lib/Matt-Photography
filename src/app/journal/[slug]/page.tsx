@@ -39,33 +39,66 @@ export default async function PostPage({
   if (!post) notFound()
 
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-      <Link
-        href="/journal"
-        className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-brand)] transition-colors mb-8 inline-block"
-      >
-        ← Back to journal
-      </Link>
-
+    <article>
+      {/* Cover */}
       {post.cover_image_url && (
-        <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden mb-10">
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden' }}>
           <Image
             src={post.cover_image_url}
             alt={post.title}
             fill
-            className="object-cover"
+            style={{ objectFit: 'cover' }}
             priority
+            sizes="100vw"
           />
         </div>
       )}
 
-      <div className="flex items-center gap-4 text-sm text-[var(--color-text-muted)] mb-4">
-        <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
-        {post.author_name && <span>{post.author_name}</span>}
+      {/* Post header */}
+      <div
+        className="px-6 md:px-12 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end"
+        style={{
+          paddingTop: post.cover_image_url ? 'clamp(40px, 5vw, 64px)' : 'clamp(80px, 12vw, 140px)',
+          paddingBottom: 'clamp(40px, 5vw, 64px)',
+          borderBottom: '0.5px solid var(--fg-5)',
+        }}
+      >
+        <div>
+          <div style={{
+            fontFamily: 'var(--font-mono)', fontSize: 10,
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+            color: 'var(--fg-4)', marginBottom: 20,
+          }}>
+            {formatDate(post.published_at)}{post.author_name ? ` — ${post.author_name}` : ''}
+          </div>
+          <h1 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 500,
+            fontSize: 'clamp(36px, 6vw, 88px)', lineHeight: 0.96,
+            letterSpacing: '-0.03em', textTransform: 'uppercase',
+            color: 'var(--fg-1)', margin: 0,
+          }}>
+            {post.title}
+          </h1>
+        </div>
+
+        <Link
+          href="/journal"
+          style={{
+            fontFamily: 'var(--font-mono)', fontSize: 10,
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            color: 'var(--fg-4)', textDecoration: 'none',
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            flexShrink: 0,
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          All Posts
+        </Link>
       </div>
 
-      <h1 className="text-4xl font-bold text-[var(--color-text)] mb-10">{post.title}</h1>
-
+      {/* Body */}
       <PostContent html={post.content} />
     </article>
   )

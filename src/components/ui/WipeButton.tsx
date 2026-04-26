@@ -8,7 +8,6 @@ interface Props {
   href?: string
   onClick?: () => void
   variant?: Variant
-  number?: number
   children: React.ReactNode
   style?: React.CSSProperties
 }
@@ -19,7 +18,7 @@ interface Props {
  * ghost:         transparent bg, dark text, dark fill wipes up on hover
  * ghost-inverse: transparent bg, white text/border, white fill wipes up on hover
  */
-export default function WipeButton({ href, onClick, variant = 'primary', number, children, style }: Props) {
+export default function WipeButton({ href, onClick, variant = 'primary', children, style }: Props) {
   const [hover, setHover] = useState(false)
 
   const isInverse = variant === 'ghost-inverse'
@@ -60,11 +59,6 @@ export default function WipeButton({ href, onClick, variant = 'primary', number,
   const inner = (
     <>
       <span style={fill}/>
-      {number != null && (
-        <span style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-mono)', fontSize: 10, opacity: 0.6, letterSpacing: '0.04em' }}>
-          /{String(number).padStart(2, '0')}
-        </span>
-      )}
       <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
       <svg
         style={{

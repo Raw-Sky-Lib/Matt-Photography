@@ -49,7 +49,7 @@ export default async function Footer() {
           </Link>
 
           {/* Tagline */}
-          {settings.tagline && (
+          {/* {settings.tagline && (
             <p style={{
               fontFamily: 'var(--font-sans)', fontSize: 13,
               lineHeight: 1.6, color: 'rgba(255,255,255,0.45)',
@@ -57,7 +57,7 @@ export default async function Footer() {
             }}>
               {settings.tagline}
             </p>
-          )}
+          )} */}
 
           {/* Availability */}
           {settings.booking_status && (

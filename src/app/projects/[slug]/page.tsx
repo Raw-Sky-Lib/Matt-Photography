@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getProjectBySlug, getProjectSlugs, getSiteSettings } from '@/lib/queries'
+import { getProjectBySlug, getProjectSlugs } from '@/lib/queries'
 
 export const revalidate = 3600
 
@@ -23,12 +23,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const [project, settings] = await Promise.all([
-    getProjectBySlug(slug),
-    getSiteSettings(),
-  ])
+  const project = await getProjectBySlug(slug)
   return {
-    title: project ? `${project.title} — ${settings.site_name}` : 'Project',
+    title: project?.title ?? 'Project',
     description: project?.subtitle ?? undefined,
     openGraph: {
       images: project?.cover_image_url ? [project.cover_image_url] : [],
