@@ -319,6 +319,18 @@ a:hover {
 .prose img    { border-radius: 0; margin: 1.5rem 0; max-width: 100%; }
 
 /* =========================================================
+   Bio section — overrides global <p> defaults inside HTML content
+   ========================================================= */
+
+.bio-body p {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.75;
+  color: var(--fg-2);
+  max-width: none;
+}
+
+/* =========================================================
    Footer
    ========================================================= */
 

@@ -2,24 +2,38 @@ import type { BioSection as BioSectionType } from '@/types/content'
 
 export default function BioSection({ data }: { data: BioSectionType }) {
   return (
-    <section
-      className="px-6 md:px-12"
-      style={{
-        paddingTop: 'clamp(64px, 8vw, 96px)',
-        paddingBottom: 'clamp(64px, 8vw, 96px)',
-        borderTop: '0.5px solid var(--fg-5)',
-      }}
-    >
+    <section style={{ background: '#f5f4f1' }}>
       <div
-        dangerouslySetInnerHTML={{ __html: data.body }}
+        className="px-6 md:px-12 grid grid-cols-1 lg:grid-cols-[180px_1fr]"
         style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: 'clamp(17px, 1.8vw, 22px)',
-          lineHeight: 1.75,
-          color: 'var(--fg-2)',
-          maxWidth: '60ch',
+          paddingTop: 'clamp(64px, 8vw, 104px)',
+          paddingBottom: 'clamp(64px, 8vw, 104px)',
+          gap: 'clamp(32px, 5vw, 80px)',
         }}
-      />
+      >
+        {/* Left — label */}
+        <div style={{ paddingTop: 6 }}>
+          <div style={{
+            fontFamily: 'var(--font-mono)', fontSize: 10,
+            letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: 'var(--fg-4)',
+          }}>
+            Biography
+          </div>
+        </div>
+
+        {/* Right — bio body */}
+        <div
+          className="bio-body"
+          dangerouslySetInnerHTML={{ __html: data.body }}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: 'clamp(16px, 1.6vw, 20px)',
+            lineHeight: 1.75,
+            color: 'var(--fg-2)',
+          }}
+        />
+      </div>
     </section>
   )
 }
