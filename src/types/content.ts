@@ -175,11 +175,22 @@ export interface FAQSection {
   items: FAQItem[]
 }
 
+export interface ServiceItem {
+  title: string
+  description: string
+}
+
+export interface ServicesSection {
+  headline: string
+  items: ServiceItem[]
+}
+
 export interface HomePageSections {
   hero: HeroSection
   client_marquee: ClientMarqueeSection
   featured_work: FeaturedWorkSection
   about_preview: AboutPreviewSection
+  services: ServicesSection
   testimonials: TestimonialsSection
   faq?: FAQSection
   cta: CTASection

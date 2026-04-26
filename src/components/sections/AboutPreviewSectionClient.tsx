@@ -35,7 +35,7 @@ export default function AboutPreviewSectionClient({ data }: { data: AboutPreview
         </div>
 
         {/* Right — photo */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '0.9', overflow: 'hidden' }}>
           {data.image_url ? (
             <Image
               src={data.image_url}
