@@ -5,7 +5,7 @@ export default function ClientMarquee({ data }: { data: ClientMarqueeSection }) 
 
   return (
     <section style={{
-      borderTop: '1px solid var(--fg-1)', borderBottom: '1px solid var(--fg-1)',
+      borderTop: '1px solid var(--fg-1)', borderBottom: '1px solid var(--fg-4)',
       padding: '22px 0', overflow: 'hidden', background: '#fff',
     }}>
       <div style={{

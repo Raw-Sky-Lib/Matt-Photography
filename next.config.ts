@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        // Replace [CLIENT_SUPABASE_REF] with the actual ref once Dagim provisions Supabase
-        hostname: '[CLIENT_SUPABASE_REF].supabase.co',
+        hostname: 'lkjgboiyxxarrapilgqk.supabase.co',
         pathname: '/storage/v1/object/public/**',
       },
     ],

@@ -170,12 +170,12 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     .eq('is_published', true)
     .single()
   if (!project) return null
-  const { data: images } = await supabase
+  const { data: media } = await supabase
     .from('project_images')
     .select('*')
     .eq('project_id', project.id)
     .order('display_order', { ascending: true })
-  return { ...project, images: images ?? [] } as Project
+  return { ...project, media: media ?? [] } as Project
 }
 
 export async function getProjectSlugs(): Promise<string[]> {

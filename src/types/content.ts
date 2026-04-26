@@ -90,14 +90,25 @@ export interface ProjectSummary {
   display_order: number
 }
 
-export interface Project extends ProjectSummary {
-  description: string | null
-  images: ProjectImage[]
+export interface ProjectMeta {
+  location?: string
+  film_stock?: string
+  camera?: string
+  duration?: string
 }
 
-export interface ProjectImage {
+export interface Project extends ProjectSummary {
+  description: string | null
+  body: string | null
+  meta: ProjectMeta | null
+  media: ProjectMedia[]
+}
+
+export interface ProjectMedia {
   id: string
-  image_url: string
+  media_type: 'image' | 'video'
+  image_url: string | null
+  video_url: string | null
   alt_text: string
   display_order: number
   width: number | null
@@ -107,7 +118,7 @@ export interface ProjectImage {
 // ─── Page section types — Home ────────────────────────────────────────────────
 
 export interface HeroVideo {
-  video_id: string
+  video_url: string
   label: string
 }
 
