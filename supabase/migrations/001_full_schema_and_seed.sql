@@ -224,7 +224,13 @@ INSERT INTO pages (slug, title, is_published, sections) VALUES (
       "cta_url": "/projects",
       "secondary_cta_label": "Book a Session",
       "secondary_cta_url": "/contact",
-      "background_image_url": null
+      "background_image_url": null,
+      "videos": [
+        { "video_id": "h07MZ3GiEhI", "label": "SOUL OVER BODY" },
+        { "video_id": "NetQR7u816w", "label": "DIR HIRT" },
+        { "video_id": "dEGWKO6wHVw", "label": "INTERIOR ECLECTICS" },
+        { "video_id": "LXfE3SU2-sU", "label": "NINETEEN" }
+      ]
     },
     "client_marquee": {
       "clients": ["National Portrait Gallery", "Condé Nast", "The Guardian", "Vogue", "British Journal of Photography", "Magnum Photos", "Dazed", "British Council", "Tate"]
