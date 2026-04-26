@@ -4,6 +4,8 @@ import './globals.css'
 import { getSiteSettings } from '@/lib/queries'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import Loader from '@/components/ui/Loader'
+import PageTransition from '@/components/ui/PageTransition'
 
 const anton = Anton({
   weight: '400',
@@ -60,8 +62,11 @@ export default async function RootLayout({
       className={`${anton.variable} ${oswald.variable} ${archivo.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <Loader />
         <Header />
-        <main>{children}</main>
+        <PageTransition>
+          <main>{children}</main>
+        </PageTransition>
         <Footer />
       </body>
     </html>
