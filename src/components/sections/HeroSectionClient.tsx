@@ -3,10 +3,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { HeroSection, HeroVideo, SiteSettings } from '@/types/content'
 
-function ytEmbed(id: string) {
-  return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&playlist=${id}`
-}
-
 interface Props {
   data: HeroSection
   settings: Pick<SiteSettings, 'location'>
@@ -33,25 +29,22 @@ export default function HeroSectionClient({ data, settings }: Props) {
       {/* ── Video cross-fade stack ───────────────────────────── */}
       <div style={{ position: 'absolute', inset: 0 }}>
         {videos.map((v, i) => (
-          <div key={v.video_id} style={{
-            position: 'absolute', inset: 0,
+          <div key={v.video_url} style={{
+            position: 'absolute', inset: 0, overflow: 'hidden',
             opacity: i === frame ? 1 : 0,
             transition: 'opacity 1600ms cubic-bezier(0.2,0,0.2,1)',
             pointerEvents: 'none',
           }}>
-            <iframe
-              src={ytEmbed(v.video_id)}
-              title={v.label}
-              allow="autoplay; encrypted-media"
+            <video
+              src={v.video_url}
+              autoPlay muted loop playsInline
               style={{
                 position: 'absolute',
                 top: '50%', left: '50%',
                 transform: 'translate(-50%, -50%)',
-                /* Cover viewport regardless of aspect ratio */
                 width: 'max(100%, calc(100vh * 16 / 9))',
                 height: 'max(100%, calc(100vw * 9 / 16))',
-                border: 'none',
-                pointerEvents: 'none',
+                objectFit: 'cover',
               }}
             />
           </div>

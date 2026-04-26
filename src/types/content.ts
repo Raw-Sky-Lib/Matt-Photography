@@ -107,7 +107,7 @@ export interface ProjectImage {
 // ─── Page section types — Home ────────────────────────────────────────────────
 
 export interface HeroVideo {
-  video_id: string
+  video_url: string
   label: string
 }
 
