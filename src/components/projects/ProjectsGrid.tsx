@@ -27,7 +27,7 @@ export default function ProjectsGrid({ projects, selectedCategory }: Props) {
 
   return (
     <div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px px-6 md:px-12"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-6 md:px-12"
       style={{ paddingTop: 32, paddingBottom: 'clamp(64px, 8vw, 96px)' }}
     >
       {filtered.map((project, i) => (

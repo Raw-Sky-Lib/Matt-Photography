@@ -56,7 +56,7 @@ export default function FeaturedWorkSection({ data, projects }: Props) {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px px-6 md:px-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-6 md:px-12">
         {items.map((project, i) => {
           const plate = PLATES[i % PLATES.length]
           const isHover = hover === i
@@ -106,14 +106,13 @@ export default function FeaturedWorkSection({ data, projects }: Props) {
               {/* Caption */}
               <div style={{
                 padding: '20px 0 24px',
-                borderBottom: '1px solid var(--fg-5)',
                 display: 'grid', gridTemplateColumns: '1fr auto',
                 alignItems: 'center', gap: 16,
               }}>
                 <div>
                   <div style={{
                     fontFamily: 'var(--font-display)', fontWeight: 500,
-                    fontSize: 'clamp(18px, 2vw, 28px)', lineHeight: 1.08,
+                    fontSize: 'clamp(15px, 1.5vw, 22px)', lineHeight: 1.08,
                     letterSpacing: '-0.01em', textTransform: 'uppercase',
                     color: 'var(--fg-1)',
                     transform: isHover ? 'translateX(6px)' : 'none',
@@ -121,14 +120,14 @@ export default function FeaturedWorkSection({ data, projects }: Props) {
                   }}>
                     {project.title}
                   </div>
-                  {project.year && (
-                    <div style={{
-                      marginTop: 5, fontFamily: 'var(--font-mono)', fontSize: 10,
-                      letterSpacing: '0.1em', color: 'var(--fg-4)',
-                    }}>
-                      {project.year}
-                    </div>
-                  )}
+                  <div style={{
+                    marginTop: 6, display: 'flex', gap: 12,
+                    fontFamily: 'var(--font-mono)', fontSize: 10,
+                    letterSpacing: '0.1em', color: 'var(--fg-4)',
+                  }}>
+                    {project.category?.name && <span>{project.category.name}</span>}
+                    {project.year && <span>{project.year}</span>}
+                  </div>
                 </div>
                 <svg
                   width="18" height="18" viewBox="0 0 24 24"

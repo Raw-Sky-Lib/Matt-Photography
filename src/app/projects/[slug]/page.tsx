@@ -126,46 +126,114 @@ export default async function ProjectPage({
         </Link>
       </div>
 
-      {/* Description */}
-      {project.description && (
-        <div className="px-6 md:px-12" style={{ paddingTop: 'clamp(48px, 6vw, 72px)', paddingBottom: 'clamp(48px, 6vw, 72px)', borderBottom: '1px solid var(--fg-5)' }}>
-          <p style={{
-            fontFamily: 'var(--font-sans)', fontSize: 'clamp(16px, 1.6vw, 20px)',
-            lineHeight: 1.7, color: 'var(--fg-2)',
-            maxWidth: '60ch',
-          }}>
-            {project.description}
-          </p>
+      {/* Description + body + meta */}
+      {(project.description || project.body || project.meta) && (
+        <div
+          className="px-6 md:px-12"
+          style={{ paddingTop: 'clamp(48px, 6vw, 72px)', paddingBottom: 'clamp(48px, 6vw, 72px)', borderBottom: '1px solid var(--fg-5)' }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 lg:gap-24">
+
+            {/* Left — text */}
+            <div>
+              {project.description && (
+                <p style={{
+                  fontFamily: 'var(--font-sans)', fontSize: 'clamp(16px, 1.6vw, 20px)',
+                  lineHeight: 1.7, color: 'var(--fg-2)', maxWidth: '60ch',
+                  marginBottom: project.body ? 'clamp(24px, 3vw, 40px)' : 0,
+                }}>
+                  {project.description}
+                </p>
+              )}
+              {project.body && (
+                <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: project.body }}
+                />
+              )}
+            </div>
+
+            {/* Right — technical details */}
+            {project.meta && (
+              <div style={{
+                fontFamily: 'var(--font-mono)', fontSize: 11,
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+              }}>
+                <div style={{ color: 'var(--fg-4)', marginBottom: 20 }}>Technical</div>
+                <dl style={{ display: 'flex', flexDirection: 'column', gap: 14, margin: 0 }}>
+                  {project.meta.location && (
+                    <div>
+                      <dt style={{ color: 'var(--fg-4)', marginBottom: 2 }}>Location</dt>
+                      <dd style={{ color: 'var(--fg-2)', margin: 0 }}>{project.meta.location}</dd>
+                    </div>
+                  )}
+                  {project.meta.camera && (
+                    <div>
+                      <dt style={{ color: 'var(--fg-4)', marginBottom: 2 }}>Camera</dt>
+                      <dd style={{ color: 'var(--fg-2)', margin: 0 }}>{project.meta.camera}</dd>
+                    </div>
+                  )}
+                  {project.meta.film_stock && (
+                    <div>
+                      <dt style={{ color: 'var(--fg-4)', marginBottom: 2 }}>Film</dt>
+                      <dd style={{ color: 'var(--fg-2)', margin: 0 }}>{project.meta.film_stock}</dd>
+                    </div>
+                  )}
+                  {project.meta.duration && (
+                    <div>
+                      <dt style={{ color: 'var(--fg-4)', marginBottom: 2 }}>Duration</dt>
+                      <dd style={{ color: 'var(--fg-2)', margin: 0 }}>{project.meta.duration}</dd>
+                    </div>
+                  )}
+                </dl>
+              </div>
+            )}
+
+          </div>
         </div>
       )}
 
-      {/* Image gallery */}
-      {project.images.length > 0 && (
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-px px-6 md:px-12"
-          style={{ paddingTop: 'clamp(48px, 6vw, 72px)', paddingBottom: 'clamp(64px, 8vw, 96px)' }}
-        >
-          {project.images.map((image, i) => (
-            <div
-              key={image.id}
-              style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}
-            >
-              {image.image_url ? (
-                <Image
-                  src={image.image_url}
-                  alt={image.alt_text}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              ) : (
-                <>
-                  <div style={{ position: 'absolute', inset: 0, background: PLATES[i % PLATES.length].bg }} />
-                  <div style={{ position: 'absolute', inset: 0, background: PLATES[i % PLATES.length].glow }} />
-                </>
-              )}
+      {/* Media gallery */}
+      {project.media.length > 0 && (
+        <div style={{ paddingTop: 'clamp(48px, 6vw, 72px)', paddingBottom: 'clamp(64px, 8vw, 96px)' }}>
+
+          {/* Images — 2-column grid */}
+          {project.media.some(m => m.media_type === 'image') && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px px-6 md:px-12">
+              {project.media.filter(m => m.media_type === 'image').map((item, i) => (
+                <div key={item.id} style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
+                  {item.image_url ? (
+                    <Image
+                      src={item.image_url}
+                      alt={item.alt_text}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  ) : (
+                    <>
+                      <div style={{ position: 'absolute', inset: 0, background: PLATES[i % PLATES.length].bg }} />
+                      <div style={{ position: 'absolute', inset: 0, background: PLATES[i % PLATES.length].glow }} />
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Videos — full width, stacked */}
+          {project.media.filter(m => m.media_type === 'video').map(item => (
+            <div key={item.id} className="px-6 md:px-12" style={{ marginTop: 'clamp(24px, 3vw, 40px)' }}>
+              <video
+                src={item.video_url ?? undefined}
+                controls
+                playsInline
+                style={{ width: '100%', aspectRatio: '16/9', background: '#000', display: 'block' }}
+                aria-label={item.alt_text}
+              />
             </div>
           ))}
+
         </div>
       )}
     </article>
