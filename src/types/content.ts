@@ -106,14 +106,20 @@ export interface ProjectImage {
 
 // ─── Page section types — Home ────────────────────────────────────────────────
 
+export interface HeroVideo {
+  video_id: string
+  label: string
+}
+
 export interface HeroSection {
-  headline: string             // "Stories told in light."
-  subheadline: string          // paragraph description text
+  headline: string
+  subheadline: string
   cta_label: string
   cta_url: string
   secondary_cta_label: string | null
   secondary_cta_url: string | null
   background_image_url: string | null
+  videos?: HeroVideo[]
 }
 
 export interface ClientMarqueeSection {
