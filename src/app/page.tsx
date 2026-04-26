@@ -3,6 +3,7 @@ import HeroSection from '@/components/sections/HeroSection'
 import ClientMarquee from '@/components/sections/ClientMarquee'
 import FeaturedWorkSection from '@/components/sections/FeaturedWorkSection'
 import AboutPreviewSection from '@/components/sections/AboutPreviewSection'
+import ServicesSection from '@/components/sections/ServicesSection'
 import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import FAQSection from '@/components/sections/FAQSection'
 import CTASection from '@/components/sections/CTASection'
@@ -22,6 +23,7 @@ export default async function HomePage() {
       <ClientMarquee data={sections.client_marquee} />
       <FeaturedWorkSection data={sections.featured_work} projects={projects} />
       <AboutPreviewSection data={sections.about_preview} />
+      <ServicesSection data={sections.services} />
       <TestimonialsSection data={sections.testimonials} />
       {sections.faq && <FAQSection data={sections.faq} />}
       <CTASection data={sections.cta} />

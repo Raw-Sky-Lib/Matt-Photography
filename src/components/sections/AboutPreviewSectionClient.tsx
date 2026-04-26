@@ -18,20 +18,24 @@ export default function AboutPreviewSectionClient({ data }: { data: AboutPreview
           }}>
             {data.headline.toUpperCase()}.
           </h2>
-          <p style={{
-            fontFamily: 'var(--font-sans)', fontSize: 17,
-            lineHeight: 1.65, color: 'var(--fg-2)',
-            maxWidth: '46ch', margin: '0 0 44px',
-          }}>
-            {data.body}
-          </p>
+          <div style={{ margin: '0 0 44px' }}>
+            {data.body.split('\n\n').map((para, i) => (
+              <p key={i} style={{
+                fontFamily: 'var(--font-sans)', fontSize: 17,
+                lineHeight: 1.65, color: 'var(--fg-2)',
+                margin: i === 0 ? 0 : '16px 0 0',
+              }}>
+                {para}
+              </p>
+            ))}
+          </div>
           <WipeButton href={data.cta_url} variant="ghost">
             {data.cta_label}
           </WipeButton>
         </div>
 
         {/* Right — photo */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '0.9', overflow: 'hidden' }}>
           {data.image_url ? (
             <Image
               src={data.image_url}
