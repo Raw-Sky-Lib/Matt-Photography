@@ -148,7 +148,7 @@ export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
     .eq('is_featured', true)
     .eq('is_published', true)
     .order('display_order', { ascending: true })
-  return (data ?? []) as ProjectSummary[]
+  return (data ?? []).map(({ categories, ...p }) => ({ ...p, category: categories ?? undefined })) as ProjectSummary[]
 }
 
 export async function getPublishedProjects(): Promise<ProjectSummary[]> {
@@ -158,7 +158,7 @@ export async function getPublishedProjects(): Promise<ProjectSummary[]> {
     .select('*, categories(id, name, slug)')
     .eq('is_published', true)
     .order('display_order', { ascending: true })
-  return (data ?? []) as ProjectSummary[]
+  return (data ?? []).map(({ categories, ...p }) => ({ ...p, category: categories ?? undefined })) as ProjectSummary[]
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
@@ -170,12 +170,13 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     .eq('is_published', true)
     .single()
   if (!project) return null
-  const { data: media } = await supabase
+  const { categories, ...rest } = project
+  const { data: images } = await supabase
     .from('project_images')
     .select('*')
     .eq('project_id', project.id)
     .order('display_order', { ascending: true })
-  return { ...project, media: media ?? [] } as Project
+  return { ...rest, category: categories ?? undefined, media: images ?? [] } as Project
 }
 
 export async function getProjectSlugs(): Promise<string[]> {

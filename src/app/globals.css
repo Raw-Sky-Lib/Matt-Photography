@@ -340,3 +340,7 @@ a:hover {
 .footer-nav-link:hover {
   color: #fff !important;
 }
+
+/* Hide scrollbar on overflow-x strips (filter bars, marquees) */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
