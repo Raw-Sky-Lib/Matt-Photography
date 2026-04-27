@@ -61,6 +61,14 @@ export const mockHomePageSections: HomePageSections = {
     cta_label: 'More about Matt',
     cta_url: '/about',
   },
+  services: {
+    headline: 'What I offer.',
+    items: [
+      { title: 'Portrait', description: 'Personal, editorial, and corporate portraits — made with patience and attention to what makes you specific.' },
+      { title: 'Editorial', description: 'Long-form shoots for magazines, books, and publications that demand more than a single image.' },
+      { title: 'Commercial', description: 'Campaign and brand photography for companies who know the difference a great image makes.' },
+    ],
+  },
   testimonials: {
     headline: 'What clients say',
     items: [
