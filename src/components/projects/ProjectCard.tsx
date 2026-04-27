@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { ProjectSummary } from '@/types/content'
@@ -20,48 +20,79 @@ interface Props {
 
 export default function ProjectCard({ project, index = 0 }: Props) {
   const [hover, setHover] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const plate = PLATES[index % PLATES.length]
+
+  function handleMouseEnter() {
+    setHover(true)
+    videoRef.current?.play()
+  }
+
+  function handleMouseLeave() {
+    setHover(false)
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+    }
+  }
 
   return (
     <Link
       href={`/projects/${project.slug}`}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       style={{ textDecoration: 'none', display: 'block', cursor: 'pointer' }}
     >
-      {/* Cover image */}
-      <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden' }}>
+      {/* Cover image / video */}
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#000' }}>
 
-        {/* Image with zoom */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          transform: hover ? 'scale(1.05)' : 'scale(1)',
-          transition: 'transform 600ms cubic-bezier(0.2,0,0.2,1)',
-        }}>
-          {project.cover_image_url ? (
-            <Image
-              src={project.cover_image_url}
-              alt={project.title}
-              fill
-              style={{ objectFit: 'cover' }}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        {project.is_video_cover && project.cover_video_url ? (
+          /* Scale 16:9 video to fill 3:4 container: width ≈ 237% */
+          <div style={{
+            position: 'absolute', top: '50%', left: '50%',
+            width: '240%', aspectRatio: '16/9',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+          }}>
+            <video
+              ref={videoRef}
+              src={project.cover_video_url}
+              muted loop playsInline
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-          ) : (
-            <>
-              <div style={{ position: 'absolute', inset: 0, background: plate.bg }}/>
-              <div style={{ position: 'absolute', inset: 0, background: plate.glow }}/>
-              <div style={{
-                position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.35,
-                backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 0.5px, transparent 0.8px)',
-                backgroundSize: '3px 3px', mixBlendMode: 'overlay',
-              }}/>
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.42) 100%)',
-              }}/>
-            </>
-          )}
-        </div>
+          </div>
+        ) : (
+          /* Static image with zoom on hover */
+          <div style={{
+            position: 'absolute', inset: 0,
+            transform: hover ? 'scale(1.05)' : 'scale(1)',
+            transition: 'transform 600ms cubic-bezier(0.2,0,0.2,1)',
+          }}>
+            {project.cover_image_url ? (
+              <Image
+                src={project.cover_image_url}
+                alt={project.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            ) : (
+              <>
+                <div style={{ position: 'absolute', inset: 0, background: plate.bg }}/>
+                <div style={{ position: 'absolute', inset: 0, background: plate.glow }}/>
+                <div style={{
+                  position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.35,
+                  backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 0.5px, transparent 0.8px)',
+                  backgroundSize: '3px 3px', mixBlendMode: 'overlay',
+                }}/>
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.42) 100%)',
+                }}/>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Index label */}
         <div style={{

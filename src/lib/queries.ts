@@ -44,6 +44,7 @@ export async function getNavItems(): Promise<NavItem[]> {
 }
 
 export async function getPublishedPosts(): Promise<PostSummary[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase
     .from('posts')
@@ -54,6 +55,7 @@ export async function getPublishedPosts(): Promise<PostSummary[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+  if (IS_PLACEHOLDER) return null
   const supabase = createServerClient()
   const { data } = await supabase
     .from('posts')
@@ -65,6 +67,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 }
 
 export async function getPostSlugs(): Promise<string[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase.from('posts').select('slug').eq('is_published', true)
   return data?.map((p) => p.slug) ?? []
@@ -96,6 +99,7 @@ export async function getPageSlugs(): Promise<string[]> {
 // ─── Photography queries ──────────────────────────────────────────────────────
 
 export async function getCategories(): Promise<Category[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase
     .from('categories')
@@ -106,6 +110,7 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+  if (IS_PLACEHOLDER) return null
   const supabase = createServerClient()
   const { data } = await supabase
     .from('categories')
@@ -117,6 +122,7 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 }
 
 export async function getFeaturedImages(): Promise<GalleryImage[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase
     .from('gallery_images')
@@ -127,6 +133,7 @@ export async function getFeaturedImages(): Promise<GalleryImage[]> {
 }
 
 export async function getGalleryImages(categorySlug?: string): Promise<GalleryImage[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   let query = supabase
     .from('gallery_images')
@@ -141,6 +148,7 @@ export async function getGalleryImages(categorySlug?: string): Promise<GalleryIm
 }
 
 export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase
     .from('projects')
@@ -152,6 +160,7 @@ export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
 }
 
 export async function getPublishedProjects(): Promise<ProjectSummary[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase
     .from('projects')
@@ -162,6 +171,7 @@ export async function getPublishedProjects(): Promise<ProjectSummary[]> {
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  if (IS_PLACEHOLDER) return null
   const supabase = createServerClient()
   const { data: project } = await supabase
     .from('projects')
@@ -180,6 +190,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 }
 
 export async function getProjectSlugs(): Promise<string[]> {
+  if (IS_PLACEHOLDER) return []
   const supabase = createServerClient()
   const { data } = await supabase.from('projects').select('slug').eq('is_published', true)
   return data?.map((p) => p.slug) ?? []

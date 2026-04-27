@@ -82,6 +82,8 @@ export interface ProjectSummary {
   title: string
   subtitle: string | null
   cover_image_url: string
+  cover_video_url: string | null
+  is_video_cover: boolean
   category_id: string | null
   category?: Category
   client_name: string | null
@@ -113,6 +115,7 @@ export interface ProjectMedia {
   display_order: number
   width: number | null
   height: number | null
+  span_full: boolean
 }
 
 // ─── Page section types — Home ────────────────────────────────────────────────
