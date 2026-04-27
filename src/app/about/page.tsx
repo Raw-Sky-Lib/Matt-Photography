@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { getAboutPageSections } from '@/lib/queries'
 import AboutHeroSection from '@/components/sections/AboutHeroSection'
-import BioSection from '@/components/sections/BioSection'
 import PhilosophySection from '@/components/sections/PhilosophySection'
 import CTASection from '@/components/sections/CTASection'
 
@@ -17,8 +16,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <AboutHeroSection data={sections.hero} />
-      <BioSection data={sections.bio} />
+      <AboutHeroSection data={sections.hero} bio={sections.bio.body} />
       <PhilosophySection data={sections.philosophy} />
       <CTASection data={sections.cta} />
     </>

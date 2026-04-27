@@ -5,8 +5,8 @@ import type { Category } from '@/types/content'
 export default function CategoryFilterBar({ categories }: { categories: Category[] }) {
   const router   = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const active   = searchParams.get('category')
+  const sp       = useSearchParams()
+  const active   = sp.get('category')
 
   function select(slug: string | null) {
     router.push(slug ? `${pathname}?category=${slug}` : pathname)
@@ -18,29 +18,57 @@ export default function CategoryFilterBar({ categories }: { categories: Category
   ]
 
   return (
-    <div className="px-6 md:px-12 flex flex-wrap">
-      {items.map(({ slug, label }) => {
-        const isActive = active === slug
-        return (
-          <button
-            key={slug ?? 'all'}
-            type="button"
-            onClick={() => select(slug)}
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              padding: '16px 20px 14px',
-              fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 600,
-              letterSpacing: '0.16em', textTransform: 'uppercase',
-              color: isActive ? 'var(--fg-1)' : 'var(--fg-4)',
-              borderBottom: isActive ? '2px solid var(--fg-1)' : '2px solid transparent',
-              transition: 'color 200ms var(--ease-std), border-color 200ms var(--ease-std)',
-              marginBottom: -1,
-            }}
-          >
-            {label}
-          </button>
-        )
-      })}
+    <div
+      className="no-scrollbar overflow-x-auto"
+      style={{ borderBottom: '0.5px solid var(--fg-5)' }}
+    >
+      <div
+        className="px-6 md:px-12"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          height: 52,
+          minWidth: 'max-content',
+        }}
+      >
+        {/* Filter items */}
+        {items.map(({ slug, label }) => {
+          const isActive = active === slug
+          return (
+            <button
+              key={slug ?? 'all'}
+              type="button"
+              onClick={() => select(slug)}
+              onMouseEnter={e => {
+                if (!isActive)
+                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--fg-1)'
+              }}
+              onMouseLeave={e => {
+                if (!isActive)
+                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--fg-4)'
+              }}
+              style={{
+                background: isActive ? 'var(--fg-1)' : 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '5px 10px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                color: isActive ? 'var(--bg-1)' : 'var(--fg-4)',
+                transition:
+                  'color 160ms var(--ease-std), background 160ms var(--ease-std)',
+                flexShrink: 0,
+              }}
+            >
+              {label}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
