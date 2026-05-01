@@ -81,6 +81,7 @@ export interface ProjectSummary {
   slug: string
   title: string
   subtitle: string | null
+  description: string | null
   cover_image_url: string
   cover_video_url: string | null
   is_video_cover: boolean
