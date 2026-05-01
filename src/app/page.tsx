@@ -25,6 +25,7 @@ export default async function HomePage() {
       <AboutPreviewSection data={sections.about_preview} />
       <ServicesSection data={sections.services} />
       <TestimonialsSectionV2A data={sections.testimonials} />
+      {/* <TestimonialsSectionV3 data={sections.testimonials} projects={projects} /> */}
       {sections.faq && <FAQSection data={sections.faq} />}
       <CTASection data={sections.cta} />
     </>
