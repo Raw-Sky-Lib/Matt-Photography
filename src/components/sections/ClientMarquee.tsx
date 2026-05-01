@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { ClientMarqueeSection } from '@/types/content'
 
 export default function ClientMarquee({ data }: { data: ClientMarqueeSection }) {
@@ -5,29 +6,56 @@ export default function ClientMarquee({ data }: { data: ClientMarqueeSection }) 
 
   return (
     <section style={{
-      borderTop: '1px solid var(--fg-1)', borderBottom: '1px solid var(--fg-4)',
-      padding: '22px 0', overflow: 'hidden', background: '#fff',
+      borderTop: '1px solid var(--fg-1)',
+      borderBottom: '1px solid var(--fg-4)',
+      background: '#fff',
+      display: 'flex',
+      alignItems: 'stretch',
     }}>
-      <div style={{
-        display: 'flex', gap: 72,
-        width: 'max-content',
-        animation: 'mb-marquee 38s linear infinite',
-      }}>
-        {items.map((name, i) => (
-          <span key={i} style={{
-            fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 22,
-            letterSpacing: '0em', textTransform: 'uppercase',
-            color: 'var(--fg-1)', whiteSpace: 'nowrap',
-            display: 'inline-flex', alignItems: 'center', gap: 72,
-          }}>
-            {name}
-            <span style={{
-              color: 'var(--fg-4)', fontFamily: 'var(--font-mono)',
-              fontSize: 12, fontWeight: 400,
-            }}>/</span>
-          </span>
-        ))}
+
+      {/* "Trusted by" label — fixed left */}
+      {data.label && (
+        <div style={{
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 28px',
+          borderRight: '1px solid var(--fg-5)',
+          fontFamily: 'var(--font-mono)',
+          fontSize: 9,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: 'var(--fg-4)',
+          whiteSpace: 'nowrap',
+        }}>
+          {data.label}
+        </div>
+      )}
+
+      {/* Scrolling logos */}
+      <div style={{ flex: 1, overflow: 'hidden', padding: '20px 0' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 64,
+          width: 'max-content',
+          animation: 'mb-marquee 38s linear infinite',
+        }}>
+          {items.map((url, i) => (
+            <div key={i} style={{ flexShrink: 0, height: 32, display: 'flex', alignItems: 'center' }}>
+              <Image
+                src={url}
+                alt={`Client logo ${(i % data.clients.length) + 1}`}
+                width={0}
+                height={0}
+                sizes="200px"
+                style={{ height: 32, width: 'auto', objectFit: 'contain', opacity: 0.7 }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
+
     </section>
   )
 }

@@ -138,6 +138,7 @@ export interface HeroSection {
 }
 
 export interface ClientMarqueeSection {
+  label?: string
   clients: string[]
 }
 

@@ -348,6 +348,7 @@ a:hover {
 }
 .prose ul li {
   display: flex;
+  align-items: center;
   gap: 18px;
   font-family: var(--font-sans);
   font-size: clamp(15px, 1.4vw, 18px);
@@ -355,12 +356,13 @@ a:hover {
   color: var(--fg-2);
 }
 .prose ul li::before {
-  content: '—';
-  color: var(--fg-4);
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border: 1.5px solid var(--fg-3);
+  border-radius: 50%;
   flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  margin-top: 3px;
 }
 .prose strong  { color: var(--fg-1); font-weight: 600; }
 .prose ol      { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; color: var(--fg-2); }
