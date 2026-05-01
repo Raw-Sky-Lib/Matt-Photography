@@ -22,7 +22,7 @@ export default function HeroSectionClient({ data, settings }: Props) {
 
   return (
     <section style={{
-      position: 'relative', height: '100vh', minHeight: 780,
+      position: 'relative', height: '100svh', minHeight: 560,
       background: '#0a0a0a', color: '#fff', overflow: 'hidden',
     }}>
 
@@ -40,10 +40,9 @@ export default function HeroSectionClient({ data, settings }: Props) {
               autoPlay muted loop playsInline
               style={{
                 position: 'absolute',
-                top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 'max(100%, calc(100vh * 16 / 9))',
-                height: 'max(100%, calc(100vw * 9 / 16))',
+                inset: 0,
+                width: '100%',
+                height: '100%',
                 objectFit: 'cover',
               }}
             />
