@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { getProjectBySlug, getProjectSlugs } from '@/lib/queries'
 import ProjectMediaGrid from '@/components/projects/ProjectMediaGrid'
+import ProjectHero from '@/components/projects/ProjectHero'
 
 export const revalidate = 3600
 
@@ -37,126 +37,136 @@ export default async function ProjectPage({
   const project = await getProjectBySlug(slug)
   if (!project) notFound()
 
+  const meta = [
+    project.category?.name  && { label: 'Category', value: project.category.name },
+    project.client_name     && { label: 'Client',   value: project.client_name },
+    project.year            && { label: 'Year',     value: String(project.year) },
+    project.meta?.location  && { label: 'Location', value: project.meta.location },
+    project.meta?.duration  && { label: 'Duration', value: project.meta.duration },
+    project.meta?.camera    && { label: 'Camera',   value: project.meta.camera },
+    project.meta?.film_stock && { label: 'Film',    value: project.meta.film_stock },
+  ].filter(Boolean) as { label: string; value: string }[]
+
   return (
     <article>
 
-      {/* ── Hero cover ─────────────────────────────────────────── */}
-      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden', background: '#000' }}>
-        {project.is_video_cover && project.cover_video_url?.startsWith('http') ? (
-          <video
-            src={project.cover_video_url}
-            autoPlay muted loop playsInline
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        ) : project.cover_image_url ? (
-          <Image
-            src={project.cover_image_url}
-            alt={project.title}
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-            sizes="100vw"
-          />
-        ) : (
-          <div style={{ position: 'absolute', inset: 0, background: 'var(--bg-4)' }} />
-        )}
-      </div>
+      <ProjectHero
+        title={project.title}
+        category={project.category?.name}
+        year={project.year}
+        coverImageUrl={project.cover_image_url}
+        coverVideoUrl={project.cover_video_url}
+        isVideoCover={project.is_video_cover}
+      />
 
-      {/* ── Project header ─────────────────────────────────────── */}
+      {/* ── Header ───────────────────────────────────────────────── */}
       <div
         className="px-6 md:px-12"
-        style={{
-          paddingTop: 'clamp(40px, 5vw, 64px)',
-          paddingBottom: 'clamp(40px, 5vw, 64px)',
-          borderBottom: '0.5px solid var(--fg-5)',
-        }}
+        style={{ paddingTop: 'clamp(36px, 4vw, 52px)', paddingBottom: 'clamp(56px, 7vw, 88px)' }}
       >
-        {/* Meta row + back link */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          gap: 24, marginBottom: 'clamp(20px, 3vw, 32px)',
-        }}>
-          <div style={{
-            display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12,
+
+        {/* Back link */}
+        <Link
+          href="/projects"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
             fontFamily: 'var(--font-mono)', fontSize: 10,
             letterSpacing: '0.16em', textTransform: 'uppercase',
-            color: 'var(--fg-4)',
-          }}>
-            {project.category?.name && <span>{project.category.name}</span>}
-            {project.client_name && <><span style={{ opacity: 0.3 }}>·</span><span>{project.client_name}</span></>}
-            {project.year         && <><span style={{ opacity: 0.3 }}>·</span><span>{project.year}</span></>}
-            {project.meta?.location && <><span style={{ opacity: 0.3 }}>·</span><span>{project.meta.location}</span></>}
-            {project.meta?.duration && <><span style={{ opacity: 0.3 }}>·</span><span>{project.meta.duration}</span></>}
-          </div>
-
-          <Link
-            href="/projects"
-            style={{
-              fontFamily: 'var(--font-mono)', fontSize: 10,
-              letterSpacing: '0.14em', textTransform: 'uppercase',
-              color: 'var(--fg-4)', textDecoration: 'none',
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              flexShrink: 0,
-            }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 5l-7 7 7 7"/>
-            </svg>
-            All Projects
-          </Link>
-        </div>
+            color: 'var(--fg-4)', textDecoration: 'none',
+            marginBottom: 'clamp(28px, 3.5vw, 44px)',
+          }}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          All Projects
+        </Link>
 
         {/* Title */}
         <h1 style={{
-          fontFamily: 'var(--font-display)', fontWeight: 500,
-          fontSize: 'clamp(40px, 8vw, 120px)', lineHeight: 0.96,
-          letterSpacing: '-0.03em', textTransform: 'uppercase',
-          color: 'var(--fg-1)', margin: 0,
+          fontFamily: 'var(--font-display)',
+          fontWeight: 500,
+          fontSize: 'clamp(44px, 8vw, 120px)',
+          lineHeight: 0.96,
+          letterSpacing: '-0.03em',
+          textTransform: 'uppercase',
+          color: 'var(--fg-1)',
+          margin: 0,
         }}>
           {project.title}
         </h1>
 
-        {project.subtitle && (
-          <p style={{
-            fontFamily: 'var(--font-sans)', fontSize: 'clamp(15px, 1.3vw, 17px)',
-            lineHeight: 1.6, color: 'var(--fg-3)',
-            maxWidth: 'none', margin: 'clamp(16px, 2vw, 24px) 0 0',
-          }}>
-            {project.subtitle}
-          </p>
-        )}
+        {/* Rule */}
+        <div style={{
+          borderBottom: '1px solid var(--fg-5)',
+          marginTop: 'clamp(32px, 4vw, 48px)',
+          marginBottom: 'clamp(32px, 4vw, 48px)',
+        }} />
+
+        {/* Description + meta columns */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-[1fr_220px]"
+          style={{ gap: 'clamp(40px, 5vw, 64px)', alignItems: 'start' }}
+        >
+
+          {/* Description */}
+          {(project.description || project.body) ? (
+            <div>
+              {project.description && (
+                <p style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 400,
+                  fontSize: 'clamp(15px, 1.4vw, 18px)',
+                  lineHeight: 1.8,
+                  color: 'var(--fg-2)',
+                  margin: project.body ? '0 0 clamp(32px, 4vw, 48px)' : 0,
+                  maxWidth: '58ch',
+                }}>
+                  {project.description}
+                </p>
+              )}
+              {project.body && (
+                <div className="prose" dangerouslySetInnerHTML={{ __html: project.body }} />
+              )}
+            </div>
+          ) : (
+            <div />
+          )}
+
+          {/* Meta detail column */}
+          {meta.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {meta.map(({ label, value }) => (
+                <div key={label}>
+                  <div style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 9,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'var(--fg-4)',
+                    marginBottom: 5,
+                  }}>
+                    {label}
+                  </div>
+                  <div style={{
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 500,
+                    fontSize: 14,
+                    letterSpacing: '-0.01em',
+                    textTransform: 'uppercase',
+                    color: 'var(--fg-1)',
+                  }}>
+                    {value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        </div>
       </div>
 
-      {/* ── Content: lead + body ───────────────────────────────── */}
-      {(project.description || project.body) && (
-        <div
-          className="px-6 md:px-12"
-          style={{
-            paddingTop: 'clamp(48px, 6vw, 80px)',
-            paddingBottom: 'clamp(48px, 6vw, 80px)',
-            borderBottom: '0.5px solid var(--fg-5)',
-          }}
-        >
-          {project.description && (
-            <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(18px, 2vw, 24px)',
-              lineHeight: 1.65,
-              color: 'var(--fg-1)',
-              maxWidth: 'none',
-              margin: project.body ? '0 0 clamp(40px, 5vw, 64px)' : 0,
-            }}>
-              {project.description}
-            </p>
-          )}
-
-          {project.body && (
-            <div className="prose" dangerouslySetInnerHTML={{ __html: project.body }} />
-          )}
-        </div>
-      )}
-
-      {/* ── Media grid ─────────────────────────────────────────── */}
+      {/* ── Media ────────────────────────────────────────────────── */}
       <ProjectMediaGrid media={project.media} />
 
     </article>
