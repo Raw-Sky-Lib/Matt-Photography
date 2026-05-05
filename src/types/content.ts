@@ -241,4 +241,5 @@ export interface ContactHeroSection {
 
 export interface ContactPageSections {
   hero: ContactHeroSection
+  faq?: FAQSection
 }

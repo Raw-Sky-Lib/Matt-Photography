@@ -10,6 +10,8 @@ interface Props {
   variant?: Variant
   children: React.ReactNode
   style?: React.CSSProperties
+  type?: 'button' | 'submit'
+  disabled?: boolean
 }
 
 /**
@@ -18,7 +20,7 @@ interface Props {
  * ghost:         transparent bg, dark text, dark fill wipes up on hover
  * ghost-inverse: transparent bg, white text/border, white fill wipes up on hover
  */
-export default function WipeButton({ href, onClick, variant = 'primary', children, style }: Props) {
+export default function WipeButton({ href, onClick, variant = 'primary', children, style, type, disabled }: Props) {
   const [hover, setHover] = useState(false)
 
   const isInverse = variant === 'ghost-inverse'
@@ -39,12 +41,13 @@ export default function WipeButton({ href, onClick, variant = 'primary', childre
     padding: '16px 24px',
     fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 700,
     letterSpacing: '0.18em', textTransform: 'uppercase',
-    cursor: 'pointer',
+    cursor: disabled ? 'not-allowed' : 'pointer',
     border: `1px solid ${borderColor}`, borderRadius: 0,
     display: 'inline-flex', alignItems: 'center', gap: 14,
     color: textColor, textDecoration: 'none',
     transition: 'color 260ms cubic-bezier(0.2,0,0.2,1)',
     background: bgColor,
+    opacity: disabled ? 0.45 : 1,
     ...style,
   }
 
@@ -85,9 +88,11 @@ export default function WipeButton({ href, onClick, variant = 'primary', childre
 
   return (
     <button
+      type={type ?? 'button'}
       onClick={onClick}
-      style={{ ...base, font: 'inherit' }}
-      onMouseEnter={() => setHover(true)}
+      disabled={disabled}
+      style={base}
+      onMouseEnter={() => { if (!disabled) setHover(true) }}
       onMouseLeave={() => setHover(false)}
     >
       {inner}
