@@ -398,3 +398,9 @@ a:hover {
 /* Hide scrollbar on overflow-x strips (filter bars, marquees) */
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Contact form — underline inputs focus state */
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus { border-bottom-color: var(--fg-1) !important; }
+input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.4; cursor: pointer; }

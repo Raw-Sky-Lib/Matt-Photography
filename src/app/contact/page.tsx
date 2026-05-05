@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
-import { getContactPageSections, getSiteSettings } from '@/lib/queries'
+import { getContactPageSections, getHomePageSections, getSiteSettings } from '@/lib/queries'
 import ContactHeroSection from '@/components/sections/ContactHeroSection'
 import ContactSection from '@/components/sections/ContactSection'
+import FAQSection from '@/components/sections/FAQSection'
+import CTASection from '@/components/sections/CTASection'
 
 export const revalidate = 3600
 
@@ -11,25 +13,32 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-  const [sections, settings] = await Promise.all([
+  const [sections, homeSections, settings] = await Promise.all([
     getContactPageSections(),
+    getHomePageSections(),
     getSiteSettings(),
   ])
 
   return (
-    <div
-      className="px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
-      style={{
-        paddingTop: 'clamp(80px, 12vw, 140px)',
-        paddingBottom: 'clamp(80px, 12vw, 140px)',
-      }}
-    >
-      <ContactHeroSection
-        data={sections.hero}
-        email={settings.contact_email}
-        phone={settings.contact_phone}
-      />
-      <ContactSection projectTypes={settings.contact_project_types ?? []} />
+    <div style={{ background: '#fff' }}>
+
+      {/* Above-fold: sticky left + form right */}
+      <section style={{ padding: 'clamp(88px,10vw,128px) clamp(24px,4vw,48px) 72px' }}>
+        <div
+          className="grid grid-cols-1 lg:grid-cols-[5fr_7fr]"
+          style={{ gap: 'clamp(48px,6vw,80px)', alignItems: 'start' }}
+        >
+          <ContactHeroSection data={sections.hero} settings={settings} />
+          <ContactSection projectTypes={settings.contact_project_types ?? []} />
+        </div>
+      </section>
+
+      {/* Shared FAQ — same as home page */}
+      {homeSections.faq && <FAQSection data={homeSections.faq} />}
+
+      {/* Shared CTA — same as home page */}
+      <CTASection data={homeSections.cta} />
+
     </div>
   )
 }
